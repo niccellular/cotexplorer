@@ -1,13 +1,13 @@
 
 package com.atakmap.android.cotexplorer;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
@@ -25,11 +25,17 @@ import com.atakmap.comms.CommsLogger;
 import com.atakmap.comms.CommsMapComponent;
 import com.atakmap.coremap.cot.event.CotEvent;
 
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 
 
 public class cotexplorerDropDownReceiver extends DropDownReceiver implements
@@ -45,7 +51,7 @@ public class cotexplorerDropDownReceiver extends DropDownReceiver implements
 
     private boolean paused = false;
     private TextView cotexplorerlog = null;
-    private Button clearBtn, pauseBtn, filterBtn = null;
+    private Button clearBtn, pauseBtn, filterBtn, saveBtn = null;
     private SharedPreferences _sharedPreference = null;
     private String cotFilter = "";
 
@@ -64,8 +70,25 @@ public class cotexplorerDropDownReceiver extends DropDownReceiver implements
         clearBtn = mainView.findViewById(R.id.clearBtn);
         pauseBtn = mainView.findViewById(R.id.pauseBtn);
         filterBtn = mainView.findViewById(R.id.filterBtn);
+        saveBtn = mainView.findViewById(R.id.saveBtn);
 
         _sharedPreference = PreferenceManager.getDefaultSharedPreferences(mapView.getContext().getApplicationContext());
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File f = new File(Environment.getExternalStorageDirectory() + "/atak/cotexplorer.txt");
+                try {
+                    FileWriter fw = new FileWriter(f);
+                    fw.write(cotexplorerlog.getText().toString());
+                    fw.flush();
+                    fw.close();
+                    Toast.makeText(mapView.getContext(), "Log written to /sdcard/atak/cotexplorer.txt", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
