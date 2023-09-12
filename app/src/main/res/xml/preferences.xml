@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/preferences_title" />
+    <com.atakmap.android.gui.PanSwitchPreference
+        android:key="plugin_cotexplorer_enable"
+        android:title="@string/set_enabled"
+        android:summary="@string/set_set_enabled_summary"
+        android:dialogTitle="@string/set_enabled"/>
+
+    <com.atakmap.android.gui.PanSwitchPreference
+        android:key="plugin_cotexplorer_send"
+        android:title="@string/set_send"
+        android:summary="@string/set_send_summary"
+        android:dialogTitle="@string/set_send"
+        android:defaultValue="true"/>
+
+    <com.atakmap.android.gui.PanSwitchPreference
+        android:key="plugin_cotexplorer_recv"
+        android:title="@string/set_recv"
+        android:summary="@string/set_recv_summary"
+        android:dialogTitle="@string/set_recv"
+        android:defaultValue="true"/>
+
+    <com.atakmap.android.gui.PanEditTextPreference
+        android:key="plugin_cotexplorer_type"
+        android:title="@string/set_type"
+        android:summary="@string/set_type_summary"
+        android:dialogTitle="@string/set_type"
+        android:hint="e.g. a-U-G"/>
+
+</PreferenceScreen>
