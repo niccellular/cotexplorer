@@ -9,7 +9,7 @@
 buildscript {
 
     ext.PLUGIN_VERSION = "1.0"
-    ext.ATAK_VERSION = "4.8.1"
+    ext.ATAK_VERSION = "4.10.0"
 
     def takdevVersion = '2.+'
 
@@ -129,7 +129,7 @@ def getVersionCode() {
 
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
     buildToolsVersion "34.0.0"
 
    dexOptions {
@@ -284,7 +284,8 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 24
+        targetSdkVersion 33
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a", "x86"
         }
