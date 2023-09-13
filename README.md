@@ -1,2 +1,2 @@
 # cotexplorer
- Display and log incoming and outgoing CotEvents
+ ATAK Plugin that displays and logs incoming and outgoing CotEvents
