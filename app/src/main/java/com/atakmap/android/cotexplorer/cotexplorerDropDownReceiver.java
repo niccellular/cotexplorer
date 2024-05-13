@@ -15,7 +15,10 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 
+import com.atakmap.android.cot.CotMapComponent;
+import com.atakmap.android.gui.AlertDialogHelper;
 import com.atakmap.android.gui.EditText;
+import com.atakmap.android.importexport.CotEventFactory;
 import com.atakmap.android.maps.MapView;
 import com.atakmap.android.cotexplorer.plugin.R;
 import com.atakmap.android.dropdown.DropDown.OnStateListener;
@@ -51,7 +54,7 @@ public class cotexplorerDropDownReceiver extends DropDownReceiver implements
 
     private boolean paused = false;
     private TextView cotexplorerlog = null;
-    private Button clearBtn, pauseBtn, filterBtn, saveBtn = null;
+    private Button sendBtn, clearBtn, pauseBtn, filterBtn, saveBtn = null;
     private SharedPreferences _sharedPreference = null;
     private String cotFilter = "";
 
@@ -71,8 +74,32 @@ public class cotexplorerDropDownReceiver extends DropDownReceiver implements
         pauseBtn = mainView.findViewById(R.id.pauseBtn);
         filterBtn = mainView.findViewById(R.id.filterBtn);
         saveBtn = mainView.findViewById(R.id.saveBtn);
+        sendBtn = mainView.findViewById(R.id.sendBtn);
 
         _sharedPreference = PreferenceManager.getDefaultSharedPreferences(mapView.getContext().getApplicationContext());
+
+        sendBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                EditText et = new EditText(mapView.getContext());
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mapView.getContext());
+                alertDialog.setTitle("Enter CoT to send");
+                alertDialog.setView(et);
+                alertDialog.setNegativeButton("Cancel", null);
+                alertDialog.setPositiveButton("Send", (dialogInterface, i) -> {
+                    CotEvent cot = CotEvent.parse(et.getText().toString());
+                    if (cot.isValid()) {
+                        CotMapComponent.getExternalDispatcher().dispatch(cot);
+                    } else {
+                        Toast.makeText(mapView.getContext(), "Invalid CoT", Toast.LENGTH_LONG).show();
+                    }
+                });
+                alertDialog.show();
+            }
+        });
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
